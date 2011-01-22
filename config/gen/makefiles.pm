@@ -15,7 +15,6 @@ package gen::makefiles;
 use strict;
 use warnings;
 
-
 use base qw(Parrot::Configure::Step);
 
 use Parrot::Configure::Utils ':gen';
@@ -57,7 +56,7 @@ sub _init {
             { SOURCE => 'config/gen/makefiles/editor.in' },
 
         'parrot.pc'     => { SOURCE => 'config/gen/makefiles/parrot_pc.in' },
-        'docs/Makefile' => { SOURCE => 'config/gen/makefiles/docs.in' },
+        'html/Makefile' => { SOURCE => 'config/gen/makefiles/html.in' },
     };
     return \%data;
 }
@@ -85,7 +84,6 @@ sub makefiles {
     foreach my $target (@targets) {
         my $args   = $self->{makefiles}->{$target};
         my $source = delete $args->{SOURCE};
-
         $conf->genfile($source => $target, %$args );
     }
     return;

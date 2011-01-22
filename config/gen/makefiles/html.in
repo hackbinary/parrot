@@ -10,15 +10,27 @@ RM_RF   = @rm_rf@
 PERLDOC_BIN = @perldoc@
 VERSION = @VERSION@@DEVEL@
 
-# long list of .pod files
-POD = @TEMP_pod@
 
 #
 # Targets
 #
 
 # The default target
-all: packfile-c.pod $(POD)
+all: html
+
+html:
+	$(PERL) -I../lib ../tools/docs/make_html_docs.pl --version=$(VERSION)
+html-clean:
+	$(RM_RF) html
+
+clean: html-clean
+
+htmlhelp: html
+#IF(win32):	cd .. && $(PERL) tools/docs/mk_chm.pl
+#IF(win32):	-cd html && hhc parrot.hhp
+
+htmlhelp-clean:
+#IF(win32):	$(RM_F) "html/*.hhc" "html/*.hhk" "html/*.hhp" "html/*.chm"
 
 # This is a listing of all targets, that are meant to be called by users
 # Most of them are proxied in the root makefile parrot/Makefile
@@ -26,7 +38,7 @@ help :
 	@echo ""
 	@echo "Following targets are available to the user:"
 	@echo ""
-	@echo "all:             Generate documentation from .pod files or from the sources."
+	@echo "all:             Generate .html documentation."
 	@echo "                 This is the default target."
 	@echo ""
 	@echo "htmlhelp:        windows only, generate a .chm file."
@@ -37,24 +49,6 @@ help :
 	@echo ""
 	@echo "   clean:        Remove the generated documentation."
 	@echo ""
-
-$(POD): doc-prep
-
-doc-prep:
-	$(MKPATH) ops
-	$(TOUCH) doc-prep
-
-packfile-c.pod: ../src/packfile/api.c
-#IF(new_perldoc):	$(PERLDOC_BIN) -ud packfile-c.pod ../src/packfile/api.c
-#ELSE:	$(PERLDOC_BIN) -u ../src/packfile/api.c > packfile-c.pod
-
-clean:
-	$(RM_F) packfile-c.pod $(POD) doc-prep
-
-html:
-	$(PERL) -I../lib ../tools/docs/make_html_docs.pl --version=$(VERSION)
-html-clean:
-	$(RM_RF) html
 
 # If you are missing the command 'pdflatex' then you have first to install a
 # LaTeX distribution with it. For Windows and UNIX downloads are for example
@@ -70,15 +64,6 @@ pdf: ../tools/docs/filename_and_chapter.pl
 
 pdf-clean:
 	$(RM_RF) build
-
-htmlhelp: html
-#IF(win32):	cd .. && $(PERL) tools/docs/mk_chm.pl
-#IF(win32):	-cd html && hhc parrot.hhp
-
-htmlhelp-clean:
-#IF(win32):	$(RM_F) "html/*.hhc" "html/*.hhk" "html/*.hhp" "html/*.chm"
-
-@TEMP_pod_build@
 
 # Local variables:
 #   mode: makefile

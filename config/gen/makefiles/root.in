@@ -145,7 +145,7 @@ include compilers/data_json/Defines.mak
 
 GEN_MAKEFILES = \
     Makefile \
-    docs/Makefile \
+    html/Makefile \
     editor/Makefile \
     ext/Makefile \
     src/dynoplibs/Rules.mak \
@@ -1894,10 +1894,10 @@ html.stub:
 	@echo "Perldoc is required, but not detected."
 
 html.dummy :
-	$(MAKE) docs html
+	$(MAKE) html html
 
 html-clean :
-	$(MAKE) docs html-clean
+	$(MAKE) html html-clean
 
 #IF(has_perldoc):htmlhelp : htmlhelp.dummy
 #ELSE:htmlhelp : htmlhelp.stub
@@ -1906,16 +1906,16 @@ htmlhelp.stub:
 	@echo "Perldoc is required, but not detected."
 
 htmlhelp.dummy :
-	$(MAKE) docs htmlhelp
+	$(MAKE) html htmlhelp
 
 htmlhelp-clean :
-	$(MAKE) docs htmlhelp-clean
+	$(MAKE) html htmlhelp-clean
 
 pdf:
-	$(MAKE) docs pdf
+	$(MAKE) html pdf
 
 pdf-clean:
-	$(MAKE) docs pdf-clean
+	$(MAKE) html pdf-clean
 
 ###############################################################################
 #
