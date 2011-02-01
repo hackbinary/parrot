@@ -24,7 +24,17 @@ use lib qw(lib);
 
 use Test::More;
 use File::Spec::Functions;
-use YAML qw/LoadFile/;
+
+eval {require YAML; YAML->import('LoadFile')};
+if ($@) {
+   plan(skip_all => "YAML.pm required for this test.");
+}
+
+# List::MoreUtils.pm is also used by show_deprecated.pl
+eval {require List::MoreUtils; List::MoreUtils->import('any')};
+if ($@) {
+   plan(skip_all => "List::MoreUtils.pm required for this test.");
+}
 
 plan tests => 1;
 
